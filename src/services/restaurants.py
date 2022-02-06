@@ -1,6 +1,7 @@
 from geopy import distance
 from flask import jsonify
 from faker import Faker
+from werkzeug.exceptions import BadRequest
 
 from src.graphql.queries import get_restaurants_by_cell_ids
 
@@ -49,16 +50,16 @@ def get_nearby_restaurants(args):
     filter_element = args.get('filter')
     filter_value = args.get('filter_value')
     sort_element = args.get('sort')
-    lat = float(args.get('lat'))
-    long = float(args.get('long'))
+    lat = args.get('lat')
+    long = args.get('long')
     cells = _get_nearby_cells(lat, long)
     restaurants = get_restaurants_by_cell_ids(cells).get('restaurants')
     if lat is None or long is None:
-        raise Exception('Invalid location')
-    restaurants = _enrich_restaurants(restaurants, lat, long)
+        raise BadRequest('Invalid location')
+    restaurants = _enrich_restaurants(restaurants, float(lat), float(long))
     if filter_element is not None:
         if filter_value is None:
-            raise Exception('Invalid Filter Value')
+            raise BadRequest('Invalid Filter Value')
         restaurants = _filter_restaurants(restaurants, filter_element, filter_value)
     if sort_element is not None:
         restaurants = _sort_restaurants(restaurants, sort_element)
