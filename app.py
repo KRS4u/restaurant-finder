@@ -14,5 +14,6 @@ def handle_error(e):
 
 @app.route('/restaurants', methods=['GET'])
 def find_restaurants():
+    print('api call')
     args = request.args
     return restaurants.get_nearby_restaurants(args)
