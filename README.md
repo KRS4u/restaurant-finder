@@ -38,3 +38,7 @@
               }  
             ]  
           }`
+
+
+      #### sample request:
+      https://restaurant-finder-krs.herokuapp.com/restaurants?filter=rating&sort=rating&lat=15.9071007&long=77.686012&filter_value=2.5
