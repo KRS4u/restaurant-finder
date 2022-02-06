@@ -1,3 +1,4 @@
+from distutils.log import error
 from flask import Flask, request, jsonify
 from werkzeug.exceptions import HTTPException
 from src.services import restaurants
@@ -10,7 +11,8 @@ def handle_error(e):
     code = 500
     if isinstance(e, HTTPException):
         code = e.code
-    return jsonify(error=str(e)), code
+        return jsonify(error=str(e)), code
+    return jsonify(error='something went wrong'), code
 
 @app.route('/restaurants', methods=['GET'])
 def find_restaurants():
